@@ -13,7 +13,7 @@ public class JoystickPlayerExample : MonoBehaviour
     private Action m_UnregisterCall;
     private void Awake()
     {
-        m_UnregisterCall = EventUtil.Register(this);
+        m_UnregisterCall = EventUtil.Instance.Register(this);
     }
 
     private void OnDestroy()

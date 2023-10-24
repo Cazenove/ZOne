@@ -49,7 +49,7 @@ public class VariableJoystick : Joystick
             background.gameObject.SetActive(false);
         m_InputEvent.magnitude = 0;
         m_InputEvent.InputDir = Vector2.zero;
-        EventUtil.Send(m_InputEvent);
+        EventUtil.Instance.Send(m_InputEvent);
         base.OnPointerUp(eventData);
     }
 
@@ -62,7 +62,7 @@ public class VariableJoystick : Joystick
         }
         m_InputEvent.magnitude = magnitude;
         m_InputEvent.InputDir = normalised;
-        EventUtil.Send(m_InputEvent);
+        EventUtil.Instance.Send(m_InputEvent);
         base.HandleInput(magnitude, normalised, radius, cam);
     }
 }

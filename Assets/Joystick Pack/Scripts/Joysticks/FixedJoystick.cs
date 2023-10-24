@@ -10,6 +10,6 @@ public class FixedJoystick : Joystick
     {
         base.HandleInput(magnitude, normalised, radius, cam);
         m_InputEvent.InputDir = normalised;
-        EventUtil.Send(m_InputEvent);
+        EventUtil.Instance.Send(m_InputEvent);
     }
 }

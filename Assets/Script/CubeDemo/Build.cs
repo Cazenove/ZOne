@@ -24,12 +24,13 @@ public class Build : MonoBehaviour
                 m_Material = m;
             }
         }
-        EventUtil.Register(this);
+        m_UnregisterCall = EventUtil.Instance.Register(this);
     }
 
+    private Action m_UnregisterCall;
     private void OnDestroy()
     {
-        
+        m_UnregisterCall?.Invoke();
     }
 
     private void FixedUpdate()
@@ -46,7 +47,7 @@ public class Build : MonoBehaviour
                 return;
             }
         }
-        EventUtil.Send(new BuildActiveEvent
+        EventUtil.Instance.Send(new BuildActiveEvent
         {
             OwnerColor = Color.red
         });
@@ -58,11 +59,13 @@ public class Build : MonoBehaviour
         hasOwner = true;
         m_Color = evt.OwnerColor;
         m_Material.color = m_Color;
-        EventUtil.Send(new GridDrawEvent
+        EventUtil.Instance.Send(new GridDrawEvent
         {
             CenterPoint = GridPos,
             Radius = 5f
         });
+        gameObject.SetActive(false);
+        Destroy(this);
     }
 
     void Update()

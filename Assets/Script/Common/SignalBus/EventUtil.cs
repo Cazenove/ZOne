@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
 
 namespace ZOne
 {
     public class EventUtil
     {
+        /// <summary>
+        /// 全局事件
+        /// </summary>
+        private static Lazy<EventUtil> m_Global = new (() => new EventUtil());
+        public static EventUtil Instance => m_Global.Value;
+        
         private class FuncGroup
         {
             private FuncGroup(){}
@@ -27,21 +32,21 @@ namespace ZOne
             public List<object> actions = new List<object>();
         }
         
-        private static Dictionary<Type, FuncGroup> m_BindEvents = new Dictionary<Type, FuncGroup>();
+        private Dictionary<Type, FuncGroup> m_BindEvents = new Dictionary<Type, FuncGroup>();
         
-        public static void Send<T>(T evt)
+        public void Send<T>(T evt)
         {
             var type = evt.GetType();
             if (!m_BindEvents.ContainsKey(type))
             {
-                Debug.LogError($"未注册过 {type.FullName} 类型的事件");
+                UnityEngine.Debug.LogError($"未注册过 {type.FullName} 类型的事件");
                 return;
             }
             m_BindEvents[type].call.Invoke(evt);
         }
 
         private static object[] s_OC = new object[1];
-        public static Action Register(object component)
+        public Action Register(object component)
         {
             var sType = component.GetType();
             List<object> list = new List<object>();
@@ -58,7 +63,7 @@ namespace ZOne
                 var mi2 = mi1.MakeGenericMethod(pType);
                 
                 s_OC[0] = method.CreateDelegate(mi2.GetParameters()[0].ParameterType, component);
-                list.Add(mi2.Invoke(null, s_OC));
+                list.Add(mi2.Invoke(this, s_OC));
             }
 
             return () =>
@@ -70,7 +75,7 @@ namespace ZOne
             };
         }
         
-        public static Action RegisterAction<T>(Action<T> action)
+        public Action RegisterAction<T>(Action<T> action)
         {
             var type = typeof(T);
             if (!m_BindEvents.ContainsKey(type))
@@ -87,7 +92,7 @@ namespace ZOne
             };
         }
 
-        public static void UnregisterAction<T>(Action<T> action)
+        public void UnregisterAction<T>(Action<T> action)
         {
             var type = typeof(T);
             if (!m_BindEvents.ContainsKey(type))

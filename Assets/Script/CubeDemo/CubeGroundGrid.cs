@@ -24,7 +24,7 @@ public class CubeGroundGrid : MonoBehaviour
                 m_Material = m;
             }
         }
-        EventUtil.Register(this);
+        EventUtil.Instance.Register(this);
     }
 
     public void Init()

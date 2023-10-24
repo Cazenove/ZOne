@@ -14,7 +14,7 @@ public class ItemTrigger : MonoBehaviour
     {
         if (other.transform.GetComponent<PlayerController>() != null)
         {
-            EventUtil.Send(new GotWeaponEvent
+            EventUtil.Instance.Send(new GotWeaponEvent
             {
                 Weapon = m_BindObject,
             });

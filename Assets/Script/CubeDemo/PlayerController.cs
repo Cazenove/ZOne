@@ -14,7 +14,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        EventUtil.Register(this);
+        gameObject.Register(this);
+    }
+
+    private void OnDestroy()
+    {
+        gameObject.Unregister();
     }
 
     void Start()

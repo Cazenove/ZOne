@@ -11,7 +11,7 @@ public class ItemOwner : MonoBehaviour
 
     private void Awake()
     {
-        EventUtil.Register(this);
+        EventUtil.Instance.Register(this);
     }
 
     [EventBus]
