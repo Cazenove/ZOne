@@ -13,6 +13,9 @@ public class CubeGroundGrid : MonoBehaviour
     private Vector3 m_DefaultPos;
     private Vector3 m_Offset = Vector3.zero;
 
+    private GameObject m_MyBuild;
+    public GameObject BuildPrefab;
+    
     // 在网格上的坐标
     public Vector2 GridPos;
     void Awake()
@@ -25,6 +28,18 @@ public class CubeGroundGrid : MonoBehaviour
             }
         }
         EventUtil.Instance.Register(this);
+    }
+
+    public void Build()
+    {
+        if (BuildPrefab != null)
+        {
+            if (m_MyBuild)
+            {
+                DestroyImmediate(m_MyBuild);
+            }
+            m_MyBuild = GameObject.Instantiate(BuildPrefab, transform, false);
+        }
     }
 
     public void Init()
