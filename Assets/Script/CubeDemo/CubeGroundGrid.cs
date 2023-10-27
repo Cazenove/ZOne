@@ -9,6 +9,7 @@ public class CubeGroundGrid : MonoBehaviour
     private Material m_Material;
     private Color m_Color;
     public Color Color => m_Color;
+    public int TeamIndex;
     
     private Vector3 m_DefaultPos;
     private Vector3 m_Offset = Vector3.zero;
@@ -40,6 +41,31 @@ public class CubeGroundGrid : MonoBehaviour
             }
             m_MyBuild = GameObject.Instantiate(BuildPrefab, transform, false);
         }
+    }
+
+    public void TeamChange(int index)
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>())
+        {
+            foreach (var m in r.materials)
+            {
+                m_Material = m;
+            }
+        }
+        TeamIndex = index;
+        switch (TeamIndex)
+        {
+            case 0:
+                m_Color = Color.gray;
+                break;
+            case 1:
+                m_Color = Color.red;
+                break;
+            case 2:
+                m_Color = UnityEngine.Color.green;
+                break;
+        }
+        m_Material.color = m_Color;
     }
 
     public void Init()
